@@ -1,0 +1,13 @@
+{
+    "name": "captainjhory-ui-library",
+    "version": "0.1.0",
+    "title": "Captain's UI Library",
+    "author": "CaptainJhory",
+    "contact": "captainjhory_modding@pm.me",
+    "description": "An UI library that mimics the native look of Factorio's UI.",
+    "factorio_version": "2.1",
+    "dependencies": [
+        "base >= 2.1.0",
+        "? space-age"
+    ]
+}

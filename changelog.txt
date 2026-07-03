@@ -1,0 +1,8 @@
+---------------------------------------------------------------------------------------------------
+Version: 0.1.0
+Date: 2026-07-03
+  Features:
+    - Added a native-looking decider editor component with conditions, outputs, and else outputs.
+    - Added AND/OR condition joiners, row reordering, fulfilled row styling, and serialization helpers.
+    - Added reusable editor event handlers for consuming mods.
+    - Added a development demo gated behind a runtime-per-user setting.
