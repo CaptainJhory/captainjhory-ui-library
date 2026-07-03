@@ -113,9 +113,44 @@ local function add_choose_elem(parent, type, options)
     }
 end
 
+local function signal_sprite(signal)
+    if not signal or not signal.type or not signal.name then return nil end
+
+    local sprite_type = signal.type == "virtual" and "virtual-signal" or signal.type
+    return sprite_type .. "/" .. signal.name
+end
+
+local function add_signal_slot(parent, options)
+    if not options then error("options is required") end
+
+    if options.editing or not options.signal then
+        local choose_elem = add_choose_elem(parent, "signal", options)
+        choose_elem.elem_value = options.signal
+        return choose_elem
+    end
+
+    local button = parent.add {
+        type = "sprite-button",
+        sprite = signal_sprite(options.signal),
+        style = options.style or "decider_combinator_signal_select_button",
+        tags = {
+            component = options.component or "condition_row",
+            row_index = options.row_index,
+            field = options.field,
+        },
+    }
+
+    if options.number and options.number ~= 0 then
+        button.number = options.number
+    end
+
+    return button
+end
+
 return {
     add_label_value_section = add_label_value_section,
     add_checkbox_table = add_checkbox_table,
     add_checkbox_flow = add_checkbox_flow,
     add_choose_elem = add_choose_elem,
+    add_signal_slot = add_signal_slot,
 }

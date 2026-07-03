@@ -476,6 +476,11 @@ end
                 "Why rebuild?",
                 "Factorio GUI elements are not automatically bound to your Lua state. Rebuilding is the simple, reliable way to keep the UI honest after add, remove, move, dropdown, checkbox, text, or signal changes.",
             ),
+            callout(
+                "Signal slot editing",
+                "Selected signals render as numbered sprite buttons. Click a selected signal to rebuild that slot as a choose-element button, pick the new signal, then rebuild back to display mode.",
+                GREEN,
+            ),
             two_column_images(
                 "condition-inactive-row.png",
                 "Inactive condition row.",

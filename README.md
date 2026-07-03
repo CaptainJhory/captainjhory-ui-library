@@ -51,6 +51,13 @@ end)
 Both helpers destroy any existing panel with the same name before rebuilding and
 return the created frame.
 
+## Signal Slots
+
+Selected signals render as native-looking `sprite-button`s so the current
+resolved value can be shown as the button number overlay. Click a selected
+signal once to turn that slot back into a `choose-elem-button`, then pick the
+new signal. After selection, the slot returns to display mode.
+
 ## Signal Values
 
 For wire-aware evaluation, pass signal values as separate red and green tables:

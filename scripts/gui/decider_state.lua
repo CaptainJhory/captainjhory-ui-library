@@ -23,6 +23,10 @@ end
 local function ensure_condition(condition)
     if condition.joiner ~= "or" then condition.joiner = "and" end
     condition.fulfilled = condition.fulfilled == true
+    condition.editing_left_signal = condition.editing_left_signal == true
+    condition.editing_right_signal = condition.editing_right_signal == true
+    if condition.left_resolved_value == nil then condition.left_resolved_value = 0 end
+    if condition.right_resolved_value == nil then condition.right_resolved_value = 0 end
     if condition.input_red_enabled == nil then condition.input_red_enabled = true end
     if condition.input_green_enabled == nil then condition.input_green_enabled = true end
     if not is_valid_index(condition.comparator_index, COMPARATORS) then condition.comparator_index = 2 end
@@ -34,6 +38,8 @@ end
 
 local function ensure_output(output)
     output.fulfilled = output.fulfilled == true
+    output.editing_signal = output.editing_signal == true
+    if output.resolved_count == nil then output.resolved_count = 0 end
     if output.mode ~= "constant" then output.mode = "input_count" end
     if output.constant == nil then output.constant = 1 end
     if output.input_red_enabled == nil then output.input_red_enabled = true end
@@ -45,12 +51,16 @@ local function new_condition()
         fulfilled = false,
         input_red_enabled = true,
         input_green_enabled = true,
+        editing_left_signal = false,
         left_signal = nil,
+        left_resolved_value = 0,
         comparator_index = 2,
         output_red_enabled = true,
         output_green_enabled = true,
         right_operand_type_index = 1,
+        editing_right_signal = false,
         right_signal = nil,
+        right_resolved_value = 0,
         right_constant = 0,
         joiner = "and", -- or "or"
     }
@@ -59,9 +69,11 @@ end
 local function new_output()
     return {
         fulfilled = false,
+        editing_signal = false,
         signal = nil,
         mode = "input_count", -- or "constant"
         constant = 1,
+        resolved_count = 0,
         input_red_enabled = true,
         input_green_enabled = true,
     }
@@ -199,6 +211,9 @@ local function evaluate_condition(condition, signal_values)
         right = get_signal_value(signal_values, condition.right_signal, condition.input_red_enabled,
             condition.input_green_enabled)
     end
+
+    condition.left_resolved_value = left
+    condition.right_resolved_value = right
 
     return compare_values(left, COMPARATORS[condition.comparator_index], right)
 end

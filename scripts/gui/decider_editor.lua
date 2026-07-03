@@ -43,7 +43,7 @@ end
 local function handle_click(state, event)
     state = decider_state.normalize_state(state)
 
-    local tags = get_tags(event)
+    local tags, element = get_tags(event)
     if not tags then return false end
 
     if tags.component == "condition_section" and tags.field == "add_condition" then
@@ -77,6 +77,32 @@ local function handle_click(state, event)
 
     if tags.component == "condition_row" and tags.field == "move_condition_down" then
         return decider_state.move_row(state.conditions, tags.row_index, tags.row_index + 1)
+    end
+
+    if tags.component == "condition_row" and element.type == "sprite-button" then
+        local condition = state.conditions[tags.row_index]
+        if not condition then return false end
+
+        if tags.field == "left_signal" then
+            condition.editing_left_signal = true
+            return true
+        end
+
+        if tags.field == "right_signal" then
+            condition.editing_right_signal = true
+            return true
+        end
+    end
+
+    if tags.field == "output_signal" and element.type == "sprite-button" then
+        local outputs = get_output_collection(state, tags.component)
+        if not outputs then return false end
+
+        local output = outputs[tags.row_index]
+        if not output then return false end
+
+        output.editing_signal = true
+        return true
     end
 
     if tags.field == "move_output_up" then
@@ -209,11 +235,13 @@ local function handle_gui_elem_changed(state, event)
 
         if tags.field == "left_signal" then
             condition.left_signal = element.elem_value
+            condition.editing_left_signal = false
             return true
         end
 
         if tags.field == "right_signal" then
             condition.right_signal = element.elem_value
+            condition.editing_right_signal = false
             return true
         end
     end
@@ -226,7 +254,8 @@ local function handle_gui_elem_changed(state, event)
         if not output then return false end
 
         output.signal = element.elem_value
-        return false
+        output.editing_signal = false
+        return true
     end
 
     return false

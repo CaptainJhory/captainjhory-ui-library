@@ -8,3 +8,4 @@ Date: 2026-07-03
     - Added a development demo gated behind a runtime-per-user setting.
     - Added wire-aware condition evaluation and input-count output evaluation.
     - Added helpers for relative panels and floating screen panels.
+    - Added numbered signal display buttons that switch to choose-element mode when clicked.
