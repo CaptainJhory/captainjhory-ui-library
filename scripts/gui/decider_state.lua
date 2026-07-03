@@ -6,13 +6,14 @@ local RIGHT_OPERAND_TYPES = {
 }
 
 local function signal_keys(signal)
-    if not signal or not signal.type or not signal.name then return nil end
+    if not signal or not signal.name then return nil end
 
+    local signal_type = signal.type or "item"
     local quality = signal.quality or "normal"
     return {
-        signal.type .. "/" .. signal.name .. "/" .. quality,
-        signal.type .. "/" .. signal.name,
-        signal.type .. ":" .. signal.name,
+        signal_type .. "/" .. signal.name .. "/" .. quality,
+        signal_type .. "/" .. signal.name,
+        signal_type .. ":" .. signal.name,
     }
 end
 

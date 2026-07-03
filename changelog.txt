@@ -10,3 +10,5 @@ Date: 2026-07-03
     - Added helpers for relative panels and floating screen panels.
     - Added numbered signal display buttons that switch to choose-element mode when clicked.
     - Added in-place decider editor refresh for frequent signal value updates.
+  Bugfixes:
+    - Fixed item signals selected from circuit networks disappearing from numbered signal slots.

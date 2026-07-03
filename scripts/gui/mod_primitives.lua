@@ -114,9 +114,10 @@ local function add_choose_elem(parent, type, options)
 end
 
 local function signal_sprite(signal)
-    if not signal or not signal.type or not signal.name then return nil end
+    if not signal or not signal.name then return nil end
 
-    local sprite_type = signal.type == "virtual" and "virtual-signal" or signal.type
+    local signal_type = signal.type or "item"
+    local sprite_type = signal_type == "virtual" and "virtual-signal" or signal_type
     return sprite_type .. "/" .. signal.name
 end
 
