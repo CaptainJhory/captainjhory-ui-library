@@ -6,3 +6,4 @@ Date: 2026-07-03
     - Added AND/OR condition joiners, row reordering, fulfilled row styling, and serialization helpers.
     - Added reusable editor event handlers for consuming mods.
     - Added a development demo gated behind a runtime-per-user setting.
+    - Added wire-aware condition evaluation and input-count output evaluation.

@@ -5,11 +5,15 @@ local RIGHT_OPERAND_TYPES = {
     [2] = "signal",
 }
 
-local function signal_key(signal)
+local function signal_keys(signal)
     if not signal or not signal.type or not signal.name then return nil end
 
     local quality = signal.quality or "normal"
-    return signal.type .. "/" .. signal.name .. "/" .. quality
+    return {
+        signal.type .. "/" .. signal.name .. "/" .. quality,
+        signal.type .. "/" .. signal.name,
+        signal.type .. ":" .. signal.name,
+    }
 end
 
 local function is_valid_index(index, values)
@@ -124,11 +128,46 @@ local function move_row(rows, from_index, to_index)
     return true
 end
 
-local function get_signal_value(signal_values, signal)
-    local key = signal_key(signal)
-    if not key then return 0 end
+local function get_value_from_table(values, signal)
+    local keys = signal_keys(signal)
+    if not keys then return 0 end
 
-    return signal_values[key] or 0
+    for _, key in ipairs(keys) do
+        if values[key] ~= nil then
+            return values[key]
+        end
+    end
+
+    return 0
+end
+
+local function has_wire_tables(signal_values)
+    return type(signal_values.red) == "table" or type(signal_values.green) == "table"
+end
+
+local function get_signal_value(signal_values, signal, red_enabled, green_enabled)
+    signal_values = signal_values or {}
+
+    if red_enabled == nil then red_enabled = true end
+    if green_enabled == nil then green_enabled = true end
+
+    if not red_enabled and not green_enabled then return 0 end
+
+    if has_wire_tables(signal_values) then
+        local value = 0
+
+        if red_enabled and signal_values.red then
+            value = value + get_value_from_table(signal_values.red, signal)
+        end
+
+        if green_enabled and signal_values.green then
+            value = value + get_value_from_table(signal_values.green, signal)
+        end
+
+        return value
+    end
+
+    return get_value_from_table(signal_values, signal)
 end
 
 local function compare_values(left, comparator, right)
@@ -147,15 +186,30 @@ local function evaluate_condition(condition, signal_values)
 
     signal_values = signal_values or {}
 
-    local left = get_signal_value(signal_values, condition.left_signal)
+    local left = get_signal_value(signal_values, condition.left_signal, condition.input_red_enabled,
+        condition.input_green_enabled)
     local right_type = RIGHT_OPERAND_TYPES[condition.right_operand_type_index]
     local right = condition.right_constant or 0
 
     if right_type == "signal" then
-        right = get_signal_value(signal_values, condition.right_signal)
+        right = get_signal_value(signal_values, condition.right_signal, condition.input_red_enabled,
+            condition.input_green_enabled)
     end
 
     return compare_values(left, COMPARATORS[condition.comparator_index], right)
+end
+
+local function evaluate_output(output, signal_values)
+    ensure_output(output)
+
+    if output.mode == "constant" then
+        output.resolved_count = output.constant or 1
+    else
+        output.resolved_count = get_signal_value(signal_values, output.signal, output.input_red_enabled,
+            output.input_green_enabled)
+    end
+
+    return output.resolved_count
 end
 
 local function evaluate_decider_editor(state, signal_values)
@@ -182,10 +236,12 @@ local function evaluate_decider_editor(state, signal_values)
 
     for _, output in ipairs(state.outputs) do
         output.fulfilled = state.conditions_fulfilled
+        evaluate_output(output, signal_values)
     end
 
     for _, output in ipairs(state.else_outputs) do
         output.fulfilled = not state.conditions_fulfilled
+        evaluate_output(output, signal_values)
     end
 
     return state
@@ -295,4 +351,6 @@ return {
     move_row = move_row,
     evaluate_condition = evaluate_condition,
     evaluate_decider_editor = evaluate_decider_editor,
+    evaluate_output = evaluate_output,
+    get_signal_value = get_signal_value,
 }
