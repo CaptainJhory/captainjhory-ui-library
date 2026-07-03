@@ -151,11 +151,15 @@ local function get_signal_value(signal_values, signal, red_enabled, green_enable
     if red_enabled == nil then red_enabled = true end
     if green_enabled == nil then green_enabled = true end
 
-    if not red_enabled and not green_enabled then return 0 end
+    local value = 0
+
+    if signal_values.internal then
+        value = value + get_value_from_table(signal_values.internal, signal)
+    end
+
+    if not red_enabled and not green_enabled then return value end
 
     if has_wire_tables(signal_values) then
-        local value = 0
-
         if red_enabled and signal_values.red then
             value = value + get_value_from_table(signal_values.red, signal)
         end
@@ -167,7 +171,7 @@ local function get_signal_value(signal_values, signal, red_enabled, green_enable
         return value
     end
 
-    return get_value_from_table(signal_values, signal)
+    return value + get_value_from_table(signal_values, signal)
 end
 
 local function compare_values(left, comparator, right)

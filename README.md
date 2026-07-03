@@ -57,6 +57,9 @@ For wire-aware evaluation, pass signal values as separate red and green tables:
 
 ```lua
 ui.decider_state.evaluate_decider_editor(state, {
+  internal = {
+    ["virtual/signal-T/normal"] = 722,
+  },
   red = {
     ["virtual/signal-T/normal"] = 500,
   },
@@ -65,6 +68,9 @@ ui.decider_state.evaluate_decider_editor(state, {
   },
 })
 ```
+
+`internal` signals are always available to conditions and outputs. Red and green
+signals follow the row checkboxes.
 
 Condition input checkboxes decide which wire tables are read. Output rows in
 `input_count` mode use their own red/green checkboxes and store the calculated
