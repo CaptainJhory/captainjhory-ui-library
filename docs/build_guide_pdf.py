@@ -462,7 +462,7 @@ ui.decider_editor.add(parent, state, signal_values)
 """
             ),
             p(
-                "After a handled event changes state, destroy and rebuild the editor content. This keeps indexes, active rows, fulfilled rows, dropdown choices, and signal buttons visually synchronized.",
+                "After a handled event changes the editor structure, destroy and rebuild the editor content. This keeps indexes, rows, dropdown choices, and signal picker/display modes synchronized.",
             ),
             code_block(
                 """
@@ -474,12 +474,21 @@ end
             ),
             callout(
                 "Why rebuild?",
-                "Factorio GUI elements are not automatically bound to your Lua state. Rebuilding is the simple, reliable way to keep the UI honest after add, remove, move, dropdown, checkbox, text, or signal changes.",
+                "Factorio GUI elements are not automatically bound to your Lua state. Rebuilding is the simple, reliable way to keep structural UI changes honest after add, remove, move, dropdown, text, or signal selection changes.",
             ),
             callout(
                 "Signal slot editing",
                 "Selected signals render as numbered sprite buttons. Click a selected signal to rebuild that slot as a choose-element button, pick the new signal, then rebuild back to display mode.",
                 GREEN,
+            ),
+            subsection("Frequent value refresh"),
+            p(
+                "When only circuit values changed, do not rebuild. Refresh updates existing tagged GUI elements in place, so an open choose-element picker stays open.",
+            ),
+            code_block(
+                """
+ui.decider_editor.refresh(parent, state, signal_values)
+"""
             ),
             two_column_images(
                 "condition-inactive-row.png",

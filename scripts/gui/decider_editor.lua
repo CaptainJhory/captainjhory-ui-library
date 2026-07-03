@@ -18,6 +18,117 @@ local function add(parent, state, signal_values)
     components.add_decider_editor(parent, state)
 end
 
+local function condition_row_style(fulfilled)
+    if fulfilled then return "decider_combinator_fulfilled_condition_frame" end
+    return "decider_combinator_condition_frame"
+end
+
+local function output_row_style(fulfilled)
+    if fulfilled then return "decider_combinator_fulfilled_frame" end
+    return "decider_combinator_frame"
+end
+
+local function signal_button_style(fulfilled)
+    if fulfilled then return "decider_combinator_fulfilled_signal_select_button" end
+    return "decider_combinator_signal_select_button"
+end
+
+local function delete_button_style(fulfilled)
+    if fulfilled then return "train_schedule_fulfilled_delete_button" end
+    return "train_schedule_delete_button"
+end
+
+local function visible_number(value)
+    if value == nil or value == 0 then return nil end
+    return value
+end
+
+local function set_style(element, style)
+    if element.style.name == style then return end
+    element.style = style
+end
+
+local function refresh_condition_element(element, condition, tags)
+    if tags.field == "row_frame" then
+        set_style(element, condition_row_style(condition.fulfilled))
+        element.style.width = 320
+        return
+    end
+
+    if tags.field == "remove_condition" then
+        set_style(element, delete_button_style(condition.fulfilled))
+        element.style.minimal_height = 40
+        return
+    end
+
+    if element.type ~= "sprite-button" then return end
+
+    if tags.field == "left_signal" then
+        set_style(element, signal_button_style(condition.fulfilled))
+        element.number = visible_number(condition.left_resolved_value)
+        return
+    end
+
+    if tags.field == "right_signal" then
+        set_style(element, signal_button_style(condition.fulfilled))
+        element.number = visible_number(condition.right_resolved_value)
+    end
+end
+
+local function refresh_output_element(element, output, tags)
+    if tags.field == "row_frame" then
+        set_style(element, output_row_style(output.fulfilled))
+        element.style.minimal_height = 48
+        element.style.maximal_height = 48
+        return
+    end
+
+    if tags.field == "remove_output" then
+        set_style(element, delete_button_style(output.fulfilled))
+        element.style.minimal_height = 40
+        return
+    end
+
+    if element.type ~= "sprite-button" then return end
+    if tags.field ~= "output_signal" then return end
+
+    set_style(element, signal_button_style(output.fulfilled))
+    element.number = visible_number(output.resolved_count)
+end
+
+local function refresh_element(element, state)
+    if not element or not element.valid then return end
+
+    local tags = element.tags or {}
+
+    if tags.component == "condition_row" then
+        local condition = state.conditions[tags.row_index]
+        if condition then
+            refresh_condition_element(element, condition, tags)
+        end
+    else
+        local outputs = get_output_collection(state, tags.component)
+        local output = outputs and outputs[tags.row_index]
+
+        if output then
+            refresh_output_element(element, output, tags)
+        end
+    end
+
+    for _, child in pairs(element.children or {}) do
+        refresh_element(child, state)
+    end
+end
+
+local function refresh(parent, state, signal_values)
+    if not parent or not parent.valid then return false end
+
+    state = decider_state.evaluate_decider_editor(state, signal_values)
+    refresh_element(parent, state)
+
+    return true
+end
+
 local function handle_selection_state_changed(state, event)
     state = decider_state.normalize_state(state)
 
@@ -263,6 +374,7 @@ end
 
 return {
     add = add,
+    refresh = refresh,
     handle_checked_state_changed = handle_checked_state_changed,
     handle_click = handle_click,
     handle_gui_elem_changed = handle_gui_elem_changed,

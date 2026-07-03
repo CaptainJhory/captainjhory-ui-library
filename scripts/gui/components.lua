@@ -92,6 +92,11 @@ local function add_condition_row(parent, condition, row_index, row_count)
         direction = "horizontal",
         style = condition.fulfilled and "decider_combinator_fulfilled_condition_frame" or
             "decider_combinator_condition_frame",
+        tags = {
+            component = "condition_row",
+            row_index = row_index,
+            field = "row_frame",
+        },
     }
     inner.style.width = 320
 
@@ -210,6 +215,11 @@ local function add_output_row(parent, output, row_index, row_count, component, a
         type = "frame",
         direction = "horizontal",
         style = active and "decider_combinator_fulfilled_frame" or "decider_combinator_frame",
+        tags = {
+            component = component,
+            row_index = row_index,
+            field = "row_frame",
+        },
     }
     inner.style.minimal_height = 48
     inner.style.maximal_height = 48

@@ -58,6 +58,16 @@ resolved value can be shown as the button number overlay. Click a selected
 signal once to turn that slot back into a `choose-elem-button`, then pick the
 new signal. After selection, the slot returns to display mode.
 
+Use `refresh` for frequent signal value updates. It updates existing GUI
+elements in place, so an open choose-element picker is not closed:
+
+```lua
+ui.decider_editor.refresh(parent_element, state, signal_values)
+```
+
+Use a full rebuild only for structural changes such as adding, removing, moving
+rows, or switching a signal slot into choose-element mode.
+
 ## Signal Values
 
 For wire-aware evaluation, pass signal values as separate red and green tables:
