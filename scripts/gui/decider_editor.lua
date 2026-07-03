@@ -264,14 +264,14 @@ local function handle_checked_state_changed(state, event)
         local condition = state.conditions[tags.row_index]
         if not condition then return false end
 
-        if tags.field == "input_red_enabled" then
-            condition.input_red_enabled = element.state
-        elseif tags.field == "input_green_enabled" then
-            condition.input_green_enabled = element.state
-        elseif tags.field == "output_red_enabled" then
-            condition.output_red_enabled = element.state
-        elseif tags.field == "output_green_enabled" then
-            condition.output_green_enabled = element.state
+        if tags.field == "left_red_enabled" or tags.field == "input_red_enabled" then
+            condition.left_red_enabled = element.state
+        elseif tags.field == "left_green_enabled" or tags.field == "input_green_enabled" then
+            condition.left_green_enabled = element.state
+        elseif tags.field == "right_red_enabled" or tags.field == "output_red_enabled" then
+            condition.right_red_enabled = element.state
+        elseif tags.field == "right_green_enabled" or tags.field == "output_green_enabled" then
+            condition.right_green_enabled = element.state
         else
             return false
         end

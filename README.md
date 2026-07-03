@@ -89,6 +89,7 @@ ui.decider_state.evaluate_decider_editor(state, {
 `internal` signals are always available to conditions and outputs. Red and green
 signals follow the row checkboxes.
 
-Condition input checkboxes decide which wire tables are read. Output rows in
-`input_count` mode use their own red/green checkboxes and store the calculated
-value in `output.resolved_count`.
+Condition rows have separate left and right input checkboxes, so a row can
+compare a signal from the red wire against another signal from the green wire.
+Output rows in `input_count` mode use their own red/green input checkboxes and
+store the calculated value in `output.resolved_count`.

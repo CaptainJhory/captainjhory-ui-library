@@ -28,11 +28,15 @@ local function ensure_condition(condition)
     condition.editing_right_signal = condition.editing_right_signal == true
     if condition.left_resolved_value == nil then condition.left_resolved_value = 0 end
     if condition.right_resolved_value == nil then condition.right_resolved_value = 0 end
-    if condition.input_red_enabled == nil then condition.input_red_enabled = true end
-    if condition.input_green_enabled == nil then condition.input_green_enabled = true end
+    if condition.left_red_enabled == nil then condition.left_red_enabled = condition.input_red_enabled end
+    if condition.left_green_enabled == nil then condition.left_green_enabled = condition.input_green_enabled end
+    if condition.right_red_enabled == nil then condition.right_red_enabled = condition.output_red_enabled end
+    if condition.right_green_enabled == nil then condition.right_green_enabled = condition.output_green_enabled end
+    if condition.left_red_enabled == nil then condition.left_red_enabled = true end
+    if condition.left_green_enabled == nil then condition.left_green_enabled = true end
+    if condition.right_red_enabled == nil then condition.right_red_enabled = true end
+    if condition.right_green_enabled == nil then condition.right_green_enabled = true end
     if not is_valid_index(condition.comparator_index, COMPARATORS) then condition.comparator_index = 2 end
-    if condition.output_red_enabled == nil then condition.output_red_enabled = true end
-    if condition.output_green_enabled == nil then condition.output_green_enabled = true end
     if RIGHT_OPERAND_TYPES[condition.right_operand_type_index] == nil then condition.right_operand_type_index = 1 end
     if condition.right_constant == nil then condition.right_constant = 0 end
 end
@@ -50,14 +54,14 @@ end
 local function new_condition()
     return {
         fulfilled = false,
-        input_red_enabled = true,
-        input_green_enabled = true,
+        left_red_enabled = true,
+        left_green_enabled = true,
         editing_left_signal = false,
         left_signal = nil,
         left_resolved_value = 0,
         comparator_index = 2,
-        output_red_enabled = true,
-        output_green_enabled = true,
+        right_red_enabled = true,
+        right_green_enabled = true,
         right_operand_type_index = 1,
         editing_right_signal = false,
         right_signal = nil,
@@ -203,14 +207,14 @@ local function evaluate_condition(condition, signal_values)
 
     signal_values = signal_values or {}
 
-    local left = get_signal_value(signal_values, condition.left_signal, condition.input_red_enabled,
-        condition.input_green_enabled)
+    local left = get_signal_value(signal_values, condition.left_signal, condition.left_red_enabled,
+        condition.left_green_enabled)
     local right_type = RIGHT_OPERAND_TYPES[condition.right_operand_type_index]
     local right = condition.right_constant or 0
 
     if right_type == "signal" then
-        right = get_signal_value(signal_values, condition.right_signal, condition.input_red_enabled,
-            condition.input_green_enabled)
+        right = get_signal_value(signal_values, condition.right_signal, condition.right_red_enabled,
+            condition.right_green_enabled)
     end
 
     condition.left_resolved_value = left
@@ -290,13 +294,13 @@ local function serialize_condition(condition)
         left_signal = condition.left_signal,
         comparator = COMPARATORS[condition.comparator_index],
         right = right,
-        input_wires = {
-            red = condition.input_red_enabled,
-            green = condition.input_green_enabled,
+        left_input_wires = {
+            red = condition.left_red_enabled,
+            green = condition.left_green_enabled,
         },
-        output_wires = {
-            red = condition.output_red_enabled,
-            green = condition.output_green_enabled,
+        right_input_wires = {
+            red = condition.right_red_enabled,
+            green = condition.right_green_enabled,
         },
     }
 end

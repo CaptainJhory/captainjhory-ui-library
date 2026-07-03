@@ -504,7 +504,7 @@ ui.decider_editor.refresh(parent, state, signal_values)
         [
             section("Conditions"),
             p(
-                "A condition row compares a left signal value against either a constant or another signal. Red and green checkboxes decide which input wire values are read.",
+                "A condition row compares a left signal value against either a constant or another signal. The left and right red/green checkboxes are separate input filters.",
             ),
             bullet(
                 [
@@ -512,8 +512,8 @@ ui.decider_editor.refresh(parent, state, signal_values)
                     "<b>comparator_index</b>: selected comparison operator.",
                     "<b>right_operand_type_index</b>: constant or signal.",
                     "<b>right_constant</b> or <b>right_signal</b>: right side value source.",
-                    "<b>input_red_enabled</b> and <b>input_green_enabled</b>: input wire filters.",
-                    "<b>output_red_enabled</b> and <b>output_green_enabled</b>: output wire intent for consumers.",
+                    "<b>left_red_enabled</b> and <b>left_green_enabled</b>: left-side input wire filters.",
+                    "<b>right_red_enabled</b> and <b>right_green_enabled</b>: right-side input wire filters.",
                     "<b>joiner</b>: and/or grouping with the previous row.",
                 ]
             ),

@@ -102,15 +102,15 @@ local function add_condition_row(parent, condition, row_index, row_count)
 
     mod_primitives.add_checkbox_table(inner, {
         {
-            state = condition.input_red_enabled,
+            state = condition.left_red_enabled,
             label = "R",
-            field = "input_red_enabled",
+            field = "left_red_enabled",
             row_index = row_index,
         },
         {
-            state = condition.input_green_enabled,
+            state = condition.left_green_enabled,
             label = "G",
-            field = "input_green_enabled",
+            field = "left_green_enabled",
             row_index = row_index,
         },
     })
@@ -138,15 +138,15 @@ local function add_condition_row(parent, condition, row_index, row_count)
 
     mod_primitives.add_checkbox_table(inner, {
         {
-            state = condition.output_red_enabled,
+            state = condition.right_red_enabled,
             label = "R",
-            field = "output_red_enabled",
+            field = "right_red_enabled",
             row_index = row_index,
         },
         {
-            state = condition.output_green_enabled,
+            state = condition.right_green_enabled,
             label = "G",
-            field = "output_green_enabled",
+            field = "right_green_enabled",
             row_index = row_index,
         },
     })

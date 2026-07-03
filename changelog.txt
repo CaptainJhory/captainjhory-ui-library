@@ -12,3 +12,4 @@ Date: 2026-07-03
     - Added in-place decider editor refresh for frequent signal value updates.
   Bugfixes:
     - Fixed item signals selected from circuit networks disappearing from numbered signal slots.
+    - Fixed condition rows so left and right signal operands use independent input wire filters.
