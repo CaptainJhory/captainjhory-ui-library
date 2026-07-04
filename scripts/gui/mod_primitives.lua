@@ -132,7 +132,7 @@ local function add_signal_slot(parent, options)
         },
     }
     slot.style.width = 40
-    slot.style.height = 40
+    slot.style.height = 36
     slot.style.vertical_spacing = 0
     slot.style.vertical_align = "center"
 
@@ -144,7 +144,7 @@ local function add_signal_slot(parent, options)
         style = options.style,
     })
     choose_elem.style.width = 40
-    choose_elem.style.height = 40
+    choose_elem.style.height = 36
     choose_elem.elem_value = options.signal
 
     local label = slot.add {
@@ -159,8 +159,8 @@ local function add_signal_slot(parent, options)
         },
     }
     label.style.width = 40
-    label.style.height = 12
-    label.style.top_margin = -17
+    label.style.height = 10
+    label.style.top_margin = -14
     label.style.horizontal_align = "center"
     label.style.font_color = { r = 1, g = 1, b = 1 }
 
