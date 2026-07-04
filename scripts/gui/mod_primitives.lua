@@ -132,9 +132,9 @@ local function add_signal_slot(parent, options)
         },
     }
     slot.style.width = 40
-    slot.style.height = 36
+    slot.style.height = 40
     slot.style.vertical_spacing = 0
-    slot.style.vertical_align = "center"
+    slot.style.vertical_align = "top"
 
     local choose_elem = add_choose_elem(slot, "signal", {
         component = options.component,
@@ -144,7 +144,7 @@ local function add_signal_slot(parent, options)
         style = options.style,
     })
     choose_elem.style.width = 40
-    choose_elem.style.height = 36
+    choose_elem.style.height = 40
     choose_elem.elem_value = options.signal
 
     local label = slot.add {
@@ -160,7 +160,7 @@ local function add_signal_slot(parent, options)
     }
     label.style.width = 40
     label.style.height = 10
-    label.style.top_margin = -14
+    label.style.top_margin = -16
     label.style.horizontal_align = "center"
     label.style.font_color = { r = 1, g = 1, b = 1 }
 

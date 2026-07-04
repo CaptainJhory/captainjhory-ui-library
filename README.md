@@ -53,10 +53,9 @@ return the created frame.
 
 ## Signal Slots
 
-Selected signals render as native-looking `sprite-button`s so the current
-resolved value can be shown as the button number overlay. Click a selected
-signal once to turn that slot back into a `choose-elem-button`, then pick the
-new signal. After selection, the slot returns to display mode.
+Signal slots render as native `choose-elem-button`s with a compact value label.
+This keeps one-click signal picking and Factorio's hover + `Q` signal copy
+behavior while still showing the current resolved value.
 
 Use `refresh` for frequent signal value updates. It updates existing GUI
 elements in place, so an open choose-element picker is not closed:
@@ -66,7 +65,7 @@ ui.decider_editor.refresh(parent_element, state, signal_values)
 ```
 
 Use a full rebuild only for structural changes such as adding, removing, moving
-rows, or switching a signal slot into choose-element mode.
+rows, changing dropdown modes, text edits, or choosing a different signal.
 
 ## Signal Values
 

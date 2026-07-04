@@ -120,7 +120,6 @@ local function add_condition_row(parent, condition, row_index, row_count)
         row_index = row_index,
         signal = condition.left_signal,
         number = condition.left_resolved_value,
-        editing = condition.editing_left_signal,
         style = fulfilled_signal_button_style(condition.fulfilled),
     })
 
@@ -170,7 +169,6 @@ local function add_condition_row(parent, condition, row_index, row_count)
             row_index = row_index,
             signal = condition.right_signal,
             number = condition.right_resolved_value,
-            editing = condition.editing_right_signal,
             style = fulfilled_signal_button_style(condition.fulfilled),
         })
     end
@@ -230,7 +228,6 @@ local function add_output_row(parent, output, row_index, row_count, component, a
         field = "output_signal",
         signal = output.signal,
         number = output.resolved_count,
-        editing = output.editing_signal,
         style = fulfilled_signal_button_style(active),
     })
 

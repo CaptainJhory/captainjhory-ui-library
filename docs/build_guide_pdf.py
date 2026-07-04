@@ -462,7 +462,7 @@ ui.decider_editor.add(parent, state, signal_values)
 """
             ),
             p(
-                "After a handled event changes the editor structure, destroy and rebuild the editor content. This keeps indexes, rows, dropdown choices, and signal picker/display modes synchronized.",
+                "After a handled event changes the editor structure, destroy and rebuild the editor content. This keeps indexes, rows, dropdown choices, and selected signal values synchronized.",
             ),
             code_block(
                 """
@@ -478,7 +478,7 @@ end
             ),
             callout(
                 "Signal slot editing",
-                "Selected signals render as numbered sprite buttons. Click a selected signal to rebuild that slot as a choose-element button, pick the new signal, then rebuild back to display mode.",
+                "Signal slots stay as native choose-element buttons, so players can pick a signal with one click and use Factorio's hover + Q copy behavior. The current resolved value is shown as a compact label inside the slot.",
                 GREEN,
             ),
             subsection("Frequent value refresh"),

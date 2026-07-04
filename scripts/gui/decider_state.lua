@@ -24,8 +24,6 @@ end
 local function ensure_condition(condition)
     if condition.joiner ~= "or" then condition.joiner = "and" end
     condition.fulfilled = condition.fulfilled == true
-    condition.editing_left_signal = condition.editing_left_signal == true
-    condition.editing_right_signal = condition.editing_right_signal == true
     if condition.left_resolved_value == nil then condition.left_resolved_value = 0 end
     if condition.right_resolved_value == nil then condition.right_resolved_value = 0 end
     if condition.left_red_enabled == nil then condition.left_red_enabled = condition.input_red_enabled end
@@ -43,7 +41,6 @@ end
 
 local function ensure_output(output)
     output.fulfilled = output.fulfilled == true
-    output.editing_signal = output.editing_signal == true
     if output.resolved_count == nil then output.resolved_count = 0 end
     if output.mode ~= "constant" then output.mode = "input_count" end
     if output.constant == nil then output.constant = 1 end
@@ -56,14 +53,12 @@ local function new_condition()
         fulfilled = false,
         left_red_enabled = true,
         left_green_enabled = true,
-        editing_left_signal = false,
         left_signal = nil,
         left_resolved_value = 0,
         comparator_index = 2,
         right_red_enabled = true,
         right_green_enabled = true,
         right_operand_type_index = 1,
-        editing_right_signal = false,
         right_signal = nil,
         right_resolved_value = 0,
         right_constant = 0,
@@ -74,7 +69,6 @@ end
 local function new_output()
     return {
         fulfilled = false,
-        editing_signal = false,
         signal = nil,
         mode = "input_count", -- or "constant"
         constant = 1,

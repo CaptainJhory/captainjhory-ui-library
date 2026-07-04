@@ -329,13 +329,11 @@ local function handle_gui_elem_changed(state, event)
 
         if tags.field == "left_signal" then
             condition.left_signal = element.elem_value
-            condition.editing_left_signal = false
             return true
         end
 
         if tags.field == "right_signal" then
             condition.right_signal = element.elem_value
-            condition.editing_right_signal = false
             return true
         end
     end
@@ -348,7 +346,6 @@ local function handle_gui_elem_changed(state, event)
         if not output then return false end
 
         output.signal = element.elem_value
-        output.editing_signal = false
         return true
     end
 
