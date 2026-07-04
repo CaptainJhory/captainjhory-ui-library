@@ -13,3 +13,4 @@ Date: 2026-07-03
   Bugfixes:
     - Fixed item signals selected from circuit networks disappearing from numbered signal slots.
     - Fixed condition rows so left and right signal operands use independent input wire filters.
+    - Fixed signal slots in choose-element mode not updating fulfilled styling during refresh.

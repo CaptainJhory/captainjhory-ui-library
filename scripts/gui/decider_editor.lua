@@ -61,16 +61,16 @@ local function refresh_condition_element(element, condition, tags)
         return
     end
 
-    if element.type ~= "sprite-button" then return end
-
     if tags.field == "left_signal" then
         set_style(element, signal_button_style(condition.fulfilled))
+        if element.type ~= "sprite-button" then return end
         element.number = visible_number(condition.left_resolved_value)
         return
     end
 
     if tags.field == "right_signal" then
         set_style(element, signal_button_style(condition.fulfilled))
+        if element.type ~= "sprite-button" then return end
         element.number = visible_number(condition.right_resolved_value)
     end
 end
@@ -89,10 +89,10 @@ local function refresh_output_element(element, output, tags)
         return
     end
 
-    if element.type ~= "sprite-button" then return end
     if tags.field ~= "output_signal" then return end
 
     set_style(element, signal_button_style(output.fulfilled))
+    if element.type ~= "sprite-button" then return end
     element.number = visible_number(output.resolved_count)
 end
 
