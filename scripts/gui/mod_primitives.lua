@@ -144,7 +144,7 @@ local function add_signal_slot(parent, options)
         style = options.style,
     })
     choose_elem.style.width = 40
-    choose_elem.style.height = 32
+    choose_elem.style.height = 40
 
     local label = slot.add {
         type = "label",
@@ -157,8 +157,9 @@ local function add_signal_slot(parent, options)
             role = "signal_value",
         },
     }
-    label.style.height = 10
-    label.style.top_margin = -6
+    label.style.width = 40
+    label.style.height = 12
+    label.style.top_margin = -14
     label.style.horizontal_align = "center"
     label.style.font_color = { r = 1, g = 1, b = 1 }
 
