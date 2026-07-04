@@ -39,8 +39,8 @@ local function delete_button_style(fulfilled)
 end
 
 local function visible_number(value)
-    if value == nil or value == 0 then return nil end
-    return value
+    if value == nil or value == 0 then return "" end
+    return tostring(value)
 end
 
 local function set_style(element, style)
@@ -61,17 +61,23 @@ local function refresh_condition_element(element, condition, tags)
         return
     end
 
-    if tags.field == "left_signal" then
+    if tags.field == "left_signal" and element.type == "choose-elem-button" then
         set_style(element, signal_button_style(condition.fulfilled))
-        if element.type ~= "sprite-button" then return end
-        element.number = visible_number(condition.left_resolved_value)
         return
     end
 
-    if tags.field == "right_signal" then
+    if tags.field == "left_signal" and tags.role == "signal_value" then
+        element.caption = visible_number(condition.left_resolved_value)
+        return
+    end
+
+    if tags.field == "right_signal" and element.type == "choose-elem-button" then
         set_style(element, signal_button_style(condition.fulfilled))
-        if element.type ~= "sprite-button" then return end
-        element.number = visible_number(condition.right_resolved_value)
+        return
+    end
+
+    if tags.field == "right_signal" and tags.role == "signal_value" then
+        element.caption = visible_number(condition.right_resolved_value)
     end
 end
 
@@ -89,11 +95,14 @@ local function refresh_output_element(element, output, tags)
         return
     end
 
-    if tags.field ~= "output_signal" then return end
+    if tags.field == "output_signal" and element.type == "choose-elem-button" then
+        set_style(element, signal_button_style(output.fulfilled))
+        return
+    end
 
-    set_style(element, signal_button_style(output.fulfilled))
-    if element.type ~= "sprite-button" then return end
-    element.number = visible_number(output.resolved_count)
+    if tags.field == "output_signal" and tags.role == "signal_value" then
+        element.caption = visible_number(output.resolved_count)
+    end
 end
 
 local function refresh_element(element, state)
@@ -188,32 +197,6 @@ local function handle_click(state, event)
 
     if tags.component == "condition_row" and tags.field == "move_condition_down" then
         return decider_state.move_row(state.conditions, tags.row_index, tags.row_index + 1)
-    end
-
-    if tags.component == "condition_row" and element.type == "sprite-button" then
-        local condition = state.conditions[tags.row_index]
-        if not condition then return false end
-
-        if tags.field == "left_signal" then
-            condition.editing_left_signal = true
-            return true
-        end
-
-        if tags.field == "right_signal" then
-            condition.editing_right_signal = true
-            return true
-        end
-    end
-
-    if tags.field == "output_signal" and element.type == "sprite-button" then
-        local outputs = get_output_collection(state, tags.component)
-        if not outputs then return false end
-
-        local output = outputs[tags.row_index]
-        if not output then return false end
-
-        output.editing_signal = true
-        return true
     end
 
     if tags.field == "move_output_up" then

@@ -113,39 +113,56 @@ local function add_choose_elem(parent, type, options)
     }
 end
 
-local function signal_sprite(signal)
-    if not signal or not signal.name then return nil end
-
-    local signal_type = signal.type or "item"
-    local sprite_type = signal_type == "virtual" and "virtual-signal" or signal_type
-    return sprite_type .. "/" .. signal.name
+local function visible_number(value)
+    if value == nil or value == 0 then return "" end
+    return tostring(value)
 end
 
 local function add_signal_slot(parent, options)
     if not options then error("options is required") end
 
-    if options.editing or not options.signal then
-        local choose_elem = add_choose_elem(parent, "signal", options)
-        choose_elem.elem_value = options.signal
-        return choose_elem
-    end
-
-    local button = parent.add {
-        type = "sprite-button",
-        sprite = signal_sprite(options.signal),
-        style = options.style or "decider_combinator_signal_select_button",
+    local slot = parent.add {
+        type = "flow",
+        direction = "vertical",
         tags = {
             component = options.component or "condition_row",
             row_index = options.row_index,
             field = options.field,
+            role = "signal_slot",
         },
     }
+    slot.style.width = 40
+    slot.style.height = 40
+    slot.style.vertical_spacing = 0
+    slot.style.vertical_align = "center"
 
-    if options.number and options.number ~= 0 then
-        button.number = options.number
-    end
+    local choose_elem = add_choose_elem(slot, "signal", {
+        component = options.component,
+        row_index = options.row_index,
+        field = options.field,
+        elem_value = options.signal,
+        style = options.style,
+    })
+    choose_elem.style.width = 40
+    choose_elem.style.height = 32
 
-    return button
+    local label = slot.add {
+        type = "label",
+        caption = visible_number(options.number),
+        style = "bold_label",
+        tags = {
+            component = options.component or "condition_row",
+            row_index = options.row_index,
+            field = options.field,
+            role = "signal_value",
+        },
+    }
+    label.style.height = 10
+    label.style.top_margin = -6
+    label.style.horizontal_align = "center"
+    label.style.font_color = { r = 1, g = 1, b = 1 }
+
+    return slot
 end
 
 return {
